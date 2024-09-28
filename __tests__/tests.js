@@ -1,23 +1,25 @@
 import app, { startServer } from '../index.js';
-import request from "supertest";
-import dotenv from 'dotenv';
+import request from 'supertest';
 import mongoose from 'mongoose';
 
-dotenv.config();
-
-let server;
+let server; //для возможности закрытия соединения
 
 describe('API Tests', () => {
-
+  // Запуск сервера в для тестов
   beforeAll(async () => {
     server = await startServer();
   });
 
+  /**
+   * Закрытие сервера и соединения с MongoDB после всех тестов.
+   * @param {Function} done - Функция обратного вызова для уведомления Jest о завершении.
+   */
   afterAll((done) => {
     server.close(() => {
       console.log('!!Server closed!!');
 
-      mongoose.connection.close()
+      mongoose.connection
+        .close()
         .then(() => {
           console.log('!!MongoDB connection closed!!');
           done();
@@ -25,9 +27,8 @@ describe('API Tests', () => {
         .catch((error) => {
           console.error('Error closing MongoDB connection:', error);
           done();
-        })
-
-    })
+        });
+    });
   });
 
   it('Получение списка всех пользователей путь: /api/user', async () => {
