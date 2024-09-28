@@ -12,10 +12,21 @@ dotenv.config();
 const PORT = process.env.PORT;
 const DB_URI = process.env.DB_URI;
 
-mongoose
-  .connect(DB_URI)
-  .then(() => console.log('DB ok!'))
-  .catch((err) => console.log('!!!error connect DB!!!', err));
+const startServer = async () => {
+  try {
+    await mongoose.connect(DB_URI)
+    console.log('DB ok!');
+
+    const server = app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+    return server;
+
+  } catch (error) {
+    console.log('!!!error connect DB!!!', error);
+    process.exit(1); // Остановка приложения при ошибке подключения
+  }
+}
 
 const app = express();
 
@@ -27,8 +38,9 @@ app.use('/api', postsRouters);
 app.use('/api', imageUploadRouter);
 app.use('/api', commentsRouter);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-})
+if (require.main === module) {
+  startServer();
+}
 
-export default app; 
+export default app;
+export { startServer };
