@@ -28,8 +28,3 @@ afterAll((done) => {
       });
   });
 });
-
-// it('Получение списка всех пользователей, путь: /api/user', async () => {
-//   const response = await request(app).get('/api/user');
-//   expect(response.statusCode).toBe(200);
-// });

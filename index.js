@@ -41,10 +41,13 @@ app.use('/api', postsRouters);
 app.use('/api', imageUploadRouter);
 app.use('/api', commentsRouter);
 
-// Запуск сервера, если файл выполняется напрямую
-if (require.main === module) {
-  startServer();
-}
+// Запуск сервера, если файл выполняется напрямую для тестов
+// if (require.main === module) {
+//   startServer();
+// }
+
+// Запуск сервера 
+startServer();
 
 export default app; // для тестов
 export { startServer }; // для тестов
