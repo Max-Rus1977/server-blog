@@ -7,6 +7,7 @@ import postsRouters from './routers/postsRoutes.js';
 import commentsRouter from './routers/commentsRoutes.js';
 import imageUploadRouter from './routers/imageUploadRouter.js';
 
+const app = express();
 dotenv.config();
 
 const PORT = process.env.PORT;
@@ -30,8 +31,6 @@ const startServer = async () => {
   });
   return server; // для тестов
 };
-
-const app = express();
 
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));

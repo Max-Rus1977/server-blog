@@ -37,6 +37,27 @@ export const getAll = async (req, res) => {
   }
 };
 
+export const update = async (req, res) => {
+  try {
+    const commentId = req.params.id;
+    const { text } = req.body;
+
+    const updatedComment = await CommentModel.findByIdAndUpdate(
+      commentId,
+      { text },
+      { new: true }
+    );
+
+    res.json({
+      success: true,
+      message: 'Комментарий успешно обновлён',
+      updatedComment
+    })
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
 export const remove = async (req, res) => {
   try {
     const commentId = req.params.id;
