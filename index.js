@@ -1,6 +1,14 @@
 import express from 'express';
+import rateLimit from 'express-rate-limit';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import morgan from 'morgan';
+
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+import fs from 'fs';
+import path from 'path';
 
 import userRouters from './routers/userRouters.js';
 import postsRouters from './routers/postsRoutes.js';
@@ -9,6 +17,22 @@ import imageUploadRouter from './routers/imageUploadRouter.js';
 
 const app = express();
 dotenv.config();
+
+// Определяем __dirname для ES-модуля
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Создаем поток записи в файл
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' });
+// Используем 'combined' формат для записи логов в файл
+app.use(morgan('combined', { stream: accessLogStream }));
+
+// Ограничение запросов
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 минут
+  max: 100, // Ограничение 100 запросов
+});
+app.use(limiter); // Применить ко всем маршрутам 
 
 const PORT = process.env.PORT;
 const DB_URI = process.env.DB_URI;
