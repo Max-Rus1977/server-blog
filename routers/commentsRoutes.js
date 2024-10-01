@@ -1,11 +1,9 @@
 import express from "express";
 import checkAuth from "../utils/checkAuth.js";
-import checkValidationResult from "../utils/checkValidationResult.js";
 import * as CommentController from '../controllers/CommentControllers.js';
 import checkValidId from "../utils/checkValidId.js";
 import checkCommentAuthor from '../utils/checkCommentAuthor.js';
 
-import verificationError from '../utils/verificationError.js';
 
 const router = express.Router();
 

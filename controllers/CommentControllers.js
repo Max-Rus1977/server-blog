@@ -1,6 +1,20 @@
 import CommentModel from "../models/Comments.js";
 import { handleError } from "../utils/handleError.js";
 
+export const getAll = async (req, res) => {
+  try {
+    const comments = await CommentModel.find();
+
+    res.json({
+      success: true,
+      comments
+    })
+
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
 export const create = async (req, res) => {
   try {
     const postId = req.params.id;
@@ -17,20 +31,6 @@ export const create = async (req, res) => {
       message: 'Статья успешно добавлена',
       comment
     });
-
-  } catch (error) {
-    handleError(res, error);
-  }
-};
-
-export const getAll = async (req, res) => {
-  try {
-    const comments = await CommentModel.find();
-
-    res.json({
-      success: true,
-      comments
-    })
 
   } catch (error) {
     handleError(res, error);

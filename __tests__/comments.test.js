@@ -1,11 +1,46 @@
-import app from '../index.js';
 import request from 'supertest';
+
+import app from '../index.js';
+import * as testData from '../test-setup/testData.js';
 import '../test-setup/setupTests.js';
 
+let commentId;
+
 describe('Comments API Tests', () => {
-  it('Получение всех комментариев, путь: /api/comment', async () => {
+  it('Получение всех комментариев, rout: /api/comment', async () => {
     const response = await request(app).get('/api/comment');
     expect(response.statusCode).toBe(200);
+
   });
 
+  it('Создание комментария, rout: /api/comment/:id', async () => {
+    const commentDataText = 'Текст тестового комментария для тестов';
+
+    const response = await request(app)
+      .post(`/api/comment/${testData.postId}`)
+      .set('Authorization', `Bearer ${testData.token}`)
+      .send({ text: commentDataText });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toHaveProperty('success', true);
+    expect(response.body.comment).toHaveProperty('text', 'Текст тестового комментария для тестов');
+
+    commentId = response.body.comment._id;
+
+  });
+
+  it('Изменение комментария', async () => {
+    const updateCommentsData = { text: 'Обновленный текст комментария для тестов' };
+
+    const response = await request(app)
+      .patch(`/api/comment/${commentId}`)
+      .set('Authorization', `Bearer ${testData.token}`)
+      .send({ text: updateCommentsData.text, userId: testData.testUserId, });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toHaveProperty('success', true);
+    console.log('response.body!!!', response.body);
+    expect(response.body.updatedComment).toHaveProperty('text', 'Обновленный текст комментария для тестов');
+
+  });
 });

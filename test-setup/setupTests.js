@@ -1,7 +1,10 @@
 import { startServer } from '../index.js';
 import mongoose from 'mongoose';
 
+
 let server; //для возможности закрытия соединения
+
+
 
 // Запуск сервера в для тестов
 beforeAll(async () => {
