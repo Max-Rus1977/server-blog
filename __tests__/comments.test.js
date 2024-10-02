@@ -35,12 +35,28 @@ describe('Comments API Tests', () => {
     const response = await request(app)
       .patch(`/api/comment/${commentId}`)
       .set('Authorization', `Bearer ${testData.token}`)
-      .send({ text: updateCommentsData.text, userId: testData.testUserId, });
+      .send({ text: updateCommentsData.text, userId: testData.testUserId });
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toHaveProperty('success', true);
-    console.log('response.body!!!', response.body);
     expect(response.body.updatedComment).toHaveProperty('text', 'Обновленный текст комментария для тестов');
 
+  });
+
+  it('Удаление комментария', async () => {
+    const response = await request(app)
+      .delete(`/api/comment/${commentId}`)
+      .set('Authorization', `Bearer ${testData.token}`)
+      .send({ userId: testData.testUserId })
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toHaveProperty('success', true);
+
+    // Проверка, что комментарий был удален
+    const checkResponse = await request(app)
+      .get(`/api/comment/${commentId}`)
+      .set('Authorization', `Bearer ${testData.token}`);
+
+    expect(checkResponse.statusCode).toBe(404) // Ожидаем, что комментария больше нет
   });
 });
