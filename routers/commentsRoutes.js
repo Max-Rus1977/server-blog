@@ -7,9 +7,32 @@ import checkCommentAuthor from '../utils/checkCommentAuthor.js';
 
 const router = express.Router();
 
-router.get('/comment', CommentController.getAll);
-router.post('/comment/:id', checkAuth, checkValidId(), CommentController.create);
-router.patch('/comment/:id', checkAuth, checkValidId(), checkCommentAuthor, CommentController.update);
-router.delete('/comment/:id', checkAuth, checkValidId(), checkCommentAuthor, CommentController.remove);
+router.get(
+  '/comment',
+  CommentController.getAll
+);
+
+router.post(
+  '/comment/:id',
+  checkAuth,
+  checkValidId(),
+  CommentController.create
+);
+
+router.patch(
+  '/comment/:id',
+  checkAuth,
+  checkValidId(),
+  checkCommentAuthor,
+  CommentController.update
+);
+
+router.delete(
+  '/comment/:id',
+  checkAuth,
+  checkValidId(),
+  checkCommentAuthor,
+  CommentController.remove
+);
 
 export default router;

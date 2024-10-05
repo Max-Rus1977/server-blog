@@ -8,7 +8,10 @@ import checkValidationResult from "../utils/checkValidationResult.js";
 
 const router = express.Router();
 
-router.get('/user', UserController.getAll);
+router.get(
+  '/user',
+  UserController.getAll
+);
 
 router.get(
   '/auth/my',

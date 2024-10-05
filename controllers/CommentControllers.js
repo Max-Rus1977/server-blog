@@ -28,7 +28,7 @@ export const create = async (req, res) => {
 
     res.json({
       success: true,
-      message: 'Статья успешно добавлена',
+      message: 'Комментарий успешно добавлена',
       comment
     });
 

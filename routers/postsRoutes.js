@@ -18,7 +18,13 @@ router.get(
   PostController.getOne
 );
 
-router.get('/post/:id/comments', PostController.getCommentsByPost);
+router.get(
+  '/post/:id/comments',
+  checkAuth,
+  checkPostOwnership,
+  checkValidId(),
+  PostController.getCommentsByPost
+);
 
 router.post(
   '/post',

@@ -85,13 +85,15 @@ export const getCommentsByPost = async (req, res) => {
 export const remove = async (req, res) => {
   try {
     const postId = req.params.id;
+    await CommentModel.deleteMany({ postId }) // Удаляет все комменты статьи
     const doc = await PostModel.findByIdAndDelete(postId);
 
     res.json({
       success: true,
-      message: `Статья с ID ${doc.id} и заголовком ${doc.title} успешно удалена`,
-      doc
-    })
+      message: `Статья с ID ${doc.id} и заголовком ${doc.title} 
+                успешно удалена со всеми комментариями`,
+      doc,
+    });
   } catch (error) {
     handleError(res, error);
   }
