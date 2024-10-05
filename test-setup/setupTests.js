@@ -1,10 +1,7 @@
 import { startServer } from '../index.js';
 import mongoose from 'mongoose';
 
-
 let server; //для возможности закрытия соединения
-
-
 
 // Запуск сервера в для тестов
 beforeAll(async () => {
@@ -17,16 +14,16 @@ beforeAll(async () => {
  */
 afterAll((done) => {
   server.close(() => {
-    console.log('!!Server closed!!');
+    // console.log('!!Server closed!!');
 
     mongoose.connection
       .close()
       .then(() => {
-        console.log('!!MongoDB connection closed!!');
+        // console.log('!!MongoDB connection closed!!');
         done();
       })
       .catch((error) => {
-        console.error('Error closing MongoDB connection:', error);
+        // console.error('Error closing MongoDB connection:', error);
         done();
       });
   });

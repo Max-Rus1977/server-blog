@@ -22,17 +22,22 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Создаем поток записи в файл
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' });
-// Используем 'combined' формат для записи логов в файл
-app.use(morgan('combined', { stream: accessLogStream }));
+if (process.env.NODE_ENV !== 'test') {
+  // Создаем поток записи в файл
+  const accessLogStream = fs.createWriteStream(
+    path.join(__dirname, 'access.log'),
+    { flags: 'a' }
+  );
+  // Используем 'combined' формат для записи логов в файл
+  app.use(morgan('combined', { stream: accessLogStream }));
 
-// Ограничение запросов
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 минут
-  max: 100, // Ограничение 100 запросов
-});
-app.use(limiter); // Применить ко всем маршрутам 
+  // Ограничение запросов
+  const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 минут
+    max: 100, // Ограничение 100 запросов
+  });
+  app.use(limiter); // Применить ко всем маршрутам
+}
 
 const PORT = process.env.PORT;
 const DB_URI = process.env.DB_URI;
@@ -48,12 +53,16 @@ const connectToDatabase = async () => {
 };
 
 const startServer = async () => {
-  await connectToDatabase();
+  try {
+    await connectToDatabase();
 
-  const server = app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
-  return server; // для тестов
+    const server = app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+    return server; // для тестов
+  } catch (error) {
+    console.error('Error starting server:', error);
+  }
 };
 
 app.use(express.json());

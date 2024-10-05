@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": " nodemon index.js",
-    "test": "jest"
+    "dev": "nodemon index.js",
+    "test": "jest --runInBand --verbose"
   },
   "author": "",
   "license": "ISC",

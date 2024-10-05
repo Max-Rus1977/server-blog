@@ -7,13 +7,12 @@ import '../test-setup/setupTests.js';
 let commentId;
 
 describe('Comments API Tests', () => {
-  it('Получение всех комментариев, rout: /api/comment', async () => {
+  it('Получение всех комментариев', async () => {
     const response = await request(app).get('/api/comment');
     expect(response.statusCode).toBe(200);
-
   });
 
-  it('Создание комментария, rout: /api/comment/:id', async () => {
+  it('Создание комментария', async () => {
     const commentDataText = 'Текст тестового комментария для тестов';
 
     const response = await request(app)
@@ -23,14 +22,18 @@ describe('Comments API Tests', () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toHaveProperty('success', true);
-    expect(response.body.comment).toHaveProperty('text', 'Текст тестового комментария для тестов');
+    expect(response.body.comment).toHaveProperty(
+      'text',
+      'Текст тестового комментария для тестов'
+    );
 
     commentId = response.body.comment._id;
-
   });
 
-  it('Изменение комментария', async () => {
-    const updateCommentsData = { text: 'Обновленный текст комментария для тестов' };
+  it('Изменение созданного комментария', async () => {
+    const updateCommentsData = {
+      text: 'Обновленный текст комментария для тестов',
+    };
 
     const response = await request(app)
       .patch(`/api/comment/${commentId}`)
@@ -39,15 +42,17 @@ describe('Comments API Tests', () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toHaveProperty('success', true);
-    expect(response.body.updatedComment).toHaveProperty('text', 'Обновленный текст комментария для тестов');
-
+    expect(response.body.updatedComment).toHaveProperty(
+      'text',
+      'Обновленный текст комментария для тестов'
+    );
   });
 
-  it('Удаление комментария', async () => {
+  it('Удаление созданного комментария', async () => {
     const response = await request(app)
       .delete(`/api/comment/${commentId}`)
       .set('Authorization', `Bearer ${testData.token}`)
-      .send({ userId: testData.testUserId })
+      .send({ userId: testData.testUserId });
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toHaveProperty('success', true);
@@ -57,6 +62,6 @@ describe('Comments API Tests', () => {
       .get(`/api/comment/${commentId}`)
       .set('Authorization', `Bearer ${testData.token}`);
 
-    expect(checkResponse.statusCode).toBe(404) // Ожидаем, что комментария больше нет
+    expect(checkResponse.statusCode).toBe(404); // Ожидаем, что комментария больше нет
   });
 });
