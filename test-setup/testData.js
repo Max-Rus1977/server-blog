@@ -10,3 +10,10 @@ export const token = jwt.sign(
   process.env.JWT_SECRET,
   { expiresIn: '1h', }
 );
+
+export const textCommentsObjData = {
+  textOunComments: `Тестовый текст первого комментария к статье для получения 
+                    всех комментариев к ней`,
+  textTwoComments: `Тестовый текст второго комментария к статье для получения 
+                    всех комментариев к ней`
+}
