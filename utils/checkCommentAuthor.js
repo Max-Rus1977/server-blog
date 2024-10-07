@@ -10,7 +10,7 @@ const checkCommentAuthor = async (req, res, next) => {
     if (!comment) {
       return res.status(404).json({
         success: false,
-        message: 'Комментарий не найдена',
+        message: 'Комментарий не найден',
       });
     }
 

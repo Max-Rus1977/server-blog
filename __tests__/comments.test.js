@@ -63,5 +63,6 @@ describe('Comments API Tests', () => {
       .set('Authorization', `Bearer ${testData.token}`);
 
     expect(checkResponse.statusCode).toBe(404); // Ожидаем, что комментария больше нет
+    expect(checkResponse.body).toHaveProperty('success', false);
   });
 });
