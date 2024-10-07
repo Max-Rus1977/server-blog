@@ -10,6 +10,7 @@ describe('Comments API Tests', () => {
   it('Получение всех комментариев', async () => {
     const response = await request(app).get('/api/comment');
     expect(response.statusCode).toBe(200);
+    expect(response.body).toHaveProperty('success', true);
   });
 
   it('Создание комментария', async () => {
@@ -28,6 +29,18 @@ describe('Comments API Tests', () => {
     );
 
     commentId = response.body.comment._id;
+  });
+
+  it('Получение созданного комментария', async () => {
+    const response = await request(app)
+      .get(`/api/comment/${commentId}`);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toHaveProperty('success', true);
+    expect(response.body.comment).toHaveProperty(
+      'text',
+      'Текст тестового комментария для тестов'
+    );
   });
 
   it('Изменение созданного комментария', async () => {
