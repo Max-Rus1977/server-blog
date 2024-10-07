@@ -15,6 +15,20 @@ export const getAll = async (req, res) => {
   }
 };
 
+export const getOne = async (req, res) => {
+  try {
+    const commentId = req.params.id
+    const comment = await CommentModel.findById(commentId);
+
+    res.json({
+      success: true,
+      comment
+    });
+  } catch (error) {
+    handleError(res, error);
+  }
+}
+
 export const create = async (req, res) => {
   try {
     const postId = req.params.id;

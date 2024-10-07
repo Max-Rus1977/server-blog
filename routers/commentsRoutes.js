@@ -3,6 +3,7 @@ import checkAuth from "../utils/checkAuth.js";
 import * as CommentController from '../controllers/CommentControllers.js';
 import checkValidId from "../utils/checkValidId.js";
 import checkCommentAuthor from '../utils/checkCommentAuthor.js';
+import checkCommentExists from "../utils/checkCommentExists.js";
 
 
 const router = express.Router();
@@ -10,6 +11,13 @@ const router = express.Router();
 router.get(
   '/comment',
   CommentController.getAll
+);
+
+router.get(
+  '/comment/:id',
+  checkValidId(),
+  checkCommentExists,
+  CommentController.getOne
 );
 
 router.post(
