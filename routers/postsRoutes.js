@@ -20,8 +20,10 @@ router.get(
 
 router.get(
   '/post/:id/comments',
-  checkAuth,
-  checkPostOwnership,
+  // Проверка авторизации пользователя и принадлежности поста к автору
+  // Временно отключены для тестирования доступа к комментариям всем пользователям
+  // checkAuth, // Проверка, авторизован ли пользователь
+  // checkPostOwnership, // Проверка, является ли текущий пользователь автором поста
   checkValidId(),
   PostController.getCommentsByPost
 );
