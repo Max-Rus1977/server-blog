@@ -2,6 +2,20 @@ import CommentModel from "../models/Comments.js";
 import PostModel from "../models/Post.js";
 import { handleError } from "../utils/handleError.js";
 
+export const getAll = async (req, res) => {
+  try {
+    const posts = await PostModel.find().populate('user').exec();
+
+    res.json({
+      success: true,
+      posts
+    });
+
+  } catch (error) {
+    handleError(res, error);
+  }
+}
+
 export const create = async (req, res) => {
   try {
     const doc = new PostModel({
@@ -19,20 +33,6 @@ export const create = async (req, res) => {
       message: 'Статья успешно добавлена',
       post
     })
-
-  } catch (error) {
-    handleError(res, error);
-  }
-}
-
-export const getAll = async (req, res) => {
-  try {
-    const posts = await PostModel.find().populate('user').exec();
-
-    res.json({
-      success: true,
-      posts
-    });
 
   } catch (error) {
     handleError(res, error);
@@ -65,17 +65,21 @@ export const getOne = async (req, res) => {
   }
 }
 
-export const getCommentsByPost = async (req, res) => {
+export const update = async (req, res) => {
   try {
+    const { title, text, tags, imageUrl } = req.body;
     const postId = req.params.id;
-    const commentsInPost = await CommentModel
-      .find({ postId }).populate('userId', 'fullName avatarUrl');
+    const updatedPost = await PostModel.findByIdAndUpdate(
+      postId,
+      { $set: { title, text, tags, imageUrl } },
+      { new: true }
+    );
 
     res.json({
       success: true,
-      message: 'все комментарии к посту',
-      commentsInPost
-    })
+      message: 'Статья успешно обновлена',
+      post: updatedPost
+    });
 
   } catch (error) {
     handleError(res, error);
@@ -99,21 +103,17 @@ export const remove = async (req, res) => {
   }
 }
 
-export const update = async (req, res) => {
+export const getCommentsByPost = async (req, res) => {
   try {
-    const { title, text, tags, imageUrl } = req.body;
     const postId = req.params.id;
-    const updatedPost = await PostModel.findByIdAndUpdate(
-      postId,
-      { $set: { title, text, tags, imageUrl } },
-      { new: true }
-    );
+    const commentsInPost = await CommentModel
+      .find({ postId }).populate('userId', 'fullName avatarUrl');
 
     res.json({
       success: true,
-      message: 'Статья успешно обновлена',
-      post: updatedPost
-    });
+      message: 'все комментарии к посту',
+      commentsInPost
+    })
 
   } catch (error) {
     handleError(res, error);

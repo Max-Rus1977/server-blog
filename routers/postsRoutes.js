@@ -13,21 +13,6 @@ router.get(
   PostController.getAll
 );
 
-router.get(
-  '/post/:id',
-  PostController.getOne
-);
-
-router.get(
-  '/post/:id/comments',
-  // Проверка авторизации пользователя и принадлежности поста к автору
-  // Временно отключены для тестирования доступа к комментариям всем пользователям
-  // checkAuth, // Проверка, авторизован ли пользователь
-  // checkPostOwnership, // Проверка, является ли текущий пользователь автором поста
-  checkValidId(),
-  PostController.getCommentsByPost
-);
-
 router.post(
   '/post',
   checkAuth,
@@ -36,12 +21,9 @@ router.post(
   PostController.create
 );
 
-router.delete(
+router.get(
   '/post/:id',
-  checkAuth,
-  checkPostOwnership,
-  checkValidId(),
-  PostController.remove
+  PostController.getOne
 );
 
 router.patch(
@@ -52,6 +34,24 @@ router.patch(
   checkValidId(),
   checkPostOwnership,
   PostController.update
+);
+
+router.delete(
+  '/post/:id',
+  checkAuth,
+  checkPostOwnership,
+  checkValidId(),
+  PostController.remove
+);
+
+router.get(
+  '/post/:id/comments',
+  // Проверка авторизации пользователя и принадлежности поста к автору
+  // Временно отключены для тестирования доступа к комментариям всем пользователям
+  // checkAuth, // Проверка, авторизован ли пользователь
+  // checkPostOwnership, // Проверка, является ли текущий пользователь автором поста
+  checkValidId(),
+  PostController.getCommentsByPost
 );
 
 export default router;

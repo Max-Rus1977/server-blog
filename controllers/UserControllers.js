@@ -14,27 +14,6 @@ export const getAll = async (req, res) => {
   }
 }
 
-export const getMy = async (req, res) => {
-  try {
-    const user = await UserModel.findById(req.userId);
-
-    if (!user) {
-      return res.status(404).json({
-        message: 'Пользователь с таким ID не найден'
-      });
-    }
-
-    const { password, ...userData } = user._doc;
-
-    res.json({
-      success: true,
-      ...userData
-    })
-  } catch (error) {
-    handleError(res, error);
-  }
-}
-
 export const register = async (req, res) => {
   try {
     const reqPassword = req.body.password;
@@ -101,6 +80,27 @@ export const login = async (req, res) => {
       token
     })
 
+  } catch (error) {
+    handleError(res, error);
+  }
+}
+
+export const getMy = async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.userId);
+
+    if (!user) {
+      return res.status(404).json({
+        message: 'Пользователь с таким ID не найден'
+      });
+    }
+
+    const { password, ...userData } = user._doc;
+
+    res.json({
+      success: true,
+      ...userData
+    })
   } catch (error) {
     handleError(res, error);
   }

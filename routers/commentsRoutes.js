@@ -13,18 +13,18 @@ router.get(
   CommentController.getAll
 );
 
-router.get(
-  '/comment/:id',
-  checkValidId(),
-  checkCommentExists,
-  CommentController.getOne
-);
-
 router.post(
   '/comment/:id',
   checkAuth,
   checkValidId(),
   CommentController.create
+);
+
+router.get(
+  '/comment/:id',
+  checkValidId(),
+  checkCommentExists,
+  CommentController.getOne
 );
 
 router.patch(

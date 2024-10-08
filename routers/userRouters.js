@@ -13,12 +13,6 @@ router.get(
   UserController.getAll
 );
 
-router.get(
-  '/auth/my',
-  checkAuth,
-  UserController.getMy
-);
-
 router.post(
   '/auth/register',
   registerValidator,
@@ -29,6 +23,12 @@ router.post(
 router.post(
   '/auth/login',
   UserController.login
+);
+
+router.get(
+  '/auth/my',
+  checkAuth,
+  UserController.getMy
 );
 
 export default router;
