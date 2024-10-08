@@ -4,11 +4,10 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
 import fs from 'fs';
 import path from 'path';
+
+import { __dirname, __filename } from './utils/pathHelpers.js';
 
 import userRouters from './routers/userRouters.js';
 import postsRouters from './routers/postsRoutes.js';
@@ -17,10 +16,6 @@ import imageUploadRouter from './routers/imageUploadRouter.js';
 
 const app = express();
 dotenv.config();
-
-// Определяем __dirname для ES-модуля
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 if (process.env.NODE_ENV !== 'test') {
   // Создаем поток записи в файл
