@@ -8,6 +8,17 @@ import checkValidId from "../utils/checkValidId.js";
 
 const router = express.Router();
 
+/*  
+  Важно: маршрут вида '/post/tags' должен находиться выше других маршрутов, 
+  иначе он не будет обрабатываться корректно.
+  Альтернативный вариант: использовать '/post/search/tags'. 
+  Это аналогично CSS: чем больше классов в селекторе, тем сильнее его приоритет. 
+*/
+router.get(
+  '/post/search/tags',
+  PostController.getPostsByTag
+);
+
 router.get(
   '/post',
   PostController.getAll
@@ -53,5 +64,7 @@ router.get(
   checkValidId(),
   PostController.getCommentsByPost
 );
+
+
 
 export default router;

@@ -119,3 +119,20 @@ export const getCommentsByPost = async (req, res) => {
     handleError(res, error);
   }
 }
+
+export const getPostsByTag = async (req, res) => {
+  console.log('!!!!!!!!//');
+  try {
+    const requestedTag = req.query.tag;
+    console.log('!!!!RequestedTag//', requestedTag);
+
+    const posts = await PostModel.find({ tags: { $in: [requestedTag] } });
+
+    res.json({
+      success: true,
+      posts
+    })
+  } catch (error) {
+    handleError(res, error);
+  }
+}
