@@ -7,7 +7,7 @@ import morgan from 'morgan';
 import fs from 'fs';
 import path from 'path';
 
-import { __dirname, __filename } from './utils/pathHelpers.js';
+import { rootDir } from './utils/pathHelpers.js';
 
 import userRouters from './routers/userRouters.js';
 import postsRouters from './routers/postsRoutes.js';
@@ -17,22 +17,20 @@ import imageUploadRouter from './routers/imageUploadRouter.js';
 const app = express();
 dotenv.config();
 
-if (process.env.NODE_ENV !== 'test') {
-  // Создаем поток записи в файл
-  const accessLogStream = fs.createWriteStream(
-    path.join(__dirname, 'access.log'),
-    { flags: 'a' }
-  );
-  // Используем 'combined' формат для записи логов в файл
-  app.use(morgan('combined', { stream: accessLogStream }));
+// Создаем поток записи в файл
+const accessLogStream = fs.createWriteStream(
+  path.join(rootDir, 'access.log'),
+  { flags: 'a' }
+);
+// Используем 'combined' формат для записи логов в файл
+app.use(morgan('combined', { stream: accessLogStream }));
 
-  // Ограничение запросов
-  const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 минут
-    max: 100, // Ограничение 100 запросов
-  });
-  app.use(limiter); // Применить ко всем маршрутам
-}
+// Ограничение запросов
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 минут
+  max: 100, // Ограничение 100 запросов
+});
+app.use(limiter); // Применить ко всем маршрутам
 
 const PORT = process.env.PORT;
 const DB_URI = process.env.DB_URI;

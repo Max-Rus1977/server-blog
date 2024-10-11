@@ -2,6 +2,20 @@ import CommentModel from "../models/Comments.js";
 import PostModel from "../models/Post.js";
 import { handleError } from "../utils/handleError.js";
 
+export const getPostsByTag = async (req, res) => {
+  try {
+    const requestedTag = req.query.tag;
+    const posts = await PostModel.find({ tags: { $in: [requestedTag] } });
+
+    res.json({
+      success: true,
+      posts
+    })
+  } catch (error) {
+    handleError(res, error);
+  }
+}
+
 export const getAll = async (req, res) => {
   try {
     const posts = await PostModel.find().populate('user').exec();
@@ -115,23 +129,6 @@ export const getCommentsByPost = async (req, res) => {
       commentsInPost
     })
 
-  } catch (error) {
-    handleError(res, error);
-  }
-}
-
-export const getPostsByTag = async (req, res) => {
-  console.log('!!!!!!!!//');
-  try {
-    const requestedTag = req.query.tag;
-    console.log('!!!!RequestedTag//', requestedTag);
-
-    const posts = await PostModel.find({ tags: { $in: [requestedTag] } });
-
-    res.json({
-      success: true,
-      posts
-    })
   } catch (error) {
     handleError(res, error);
   }
