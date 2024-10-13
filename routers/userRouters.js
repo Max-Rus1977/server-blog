@@ -26,9 +26,14 @@ router.post(
 );
 
 router.get(
-  '/auth/my',
+  '/auth/user/my',
   checkAuth,
   UserController.getMy
+);
+
+router.patch(
+  '/user/:id',
+  UserController.update
 );
 
 export default router;
