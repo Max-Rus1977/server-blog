@@ -65,6 +65,4 @@ router.get(
   PostController.getCommentsByPost
 );
 
-
-
 export default router;

@@ -50,6 +50,16 @@ describe('Posts API Tests', () => {
     postId = response.body.post._id;
   });
 
+  it('Получение созданной стати по тегу', async () => {
+    const searchTag = encodeURIComponent('тестов');
+    const response = await request(app)
+      .get(`/api/post/search/tags?tag=${searchTag}`);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toHaveProperty('posts');
+    expect(response.body).toHaveProperty('success', true);
+  });
+
   it('Получение созданной стати', async () => {
     const response = await request(app)
       .get(`/api/post/${postId}`);
