@@ -150,3 +150,12 @@ export const getMy = async (req, res) => {
   }
 };
 
+export const remove = async (req, res) => {
+  const userId = req.params.id;
+  const removeUser = await UserModel.findByIdAndDelete(userId);
+
+  res.json({
+    success: true,
+    message: `Пользователь с именем ${removeUser.fullName} успешно удалён`
+  });
+};

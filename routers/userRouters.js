@@ -36,4 +36,9 @@ router.patch(
   UserController.update
 );
 
+router.delete(
+  '/user/:id',
+  UserController.remove
+);
+
 export default router;
